@@ -2,6 +2,7 @@ const app = require('express')()
 const bodyParser = require('body-parser')
 const http = require('http').createServer(app)
 const io = require('socket.io')(http)
+const router = require('./src/routes/index.js');
 const dbConnection = require('./src/connection/databaseConnection.js')
 
 
@@ -35,7 +36,7 @@ app.get('/', function (req, res) {
 
 
 
-
+router(app);
 
 
 const mySocket = require('./src/sockets/index')
