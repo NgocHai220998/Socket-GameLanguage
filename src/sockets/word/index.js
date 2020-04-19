@@ -19,7 +19,12 @@ function onClientSendWord(socket, io) {
                 })
               } else {
                 io.to(user.email).emit('serverUpdateProfile', {
-                  code: 200
+                  code: 200,
+                  user: {
+                    profile: newUser.profile,
+                    main: newUser.main,
+                    pets: newUser.pets
+                  }
                 })
               }
             })
