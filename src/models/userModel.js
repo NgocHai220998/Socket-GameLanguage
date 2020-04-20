@@ -87,7 +87,7 @@ const userSchema = new Schema({
     },
     isConfirmbyEmail: {
         type: Boolean,
-        default: false
+        default: true
     },
     isCreateMain: {
         type: Boolean,
