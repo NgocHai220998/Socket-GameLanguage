@@ -1,8 +1,8 @@
 
 
 function onClientSendMessage(socket, io) {
-    socket.on('clientSend', (message) => {
-        io.sockets.emit('getMessage', message)
+    socket.on('clientSendMessage', (message) => {
+        io.sockets.emit('ServerSendMessage', message)
     })
 }
 

@@ -1,9 +1,13 @@
 let configDatabase = require('../config/configDatabase.json');
+const url = 'mongodb://localhost:27017'
 let mongoose = require("mongoose");
+// console.log(process.env.NODE_ENV)
 
 module.exports = () => {
-    mongoose.connect(`mongodb://${configDatabase.username}:${configDatabase.password}@ds157829.mlab.com:57829/back-end`, {useNewUrlParser : true});
-    
-    // console.log(`mongodb+srv://${configDatabase.databaseName}:${configDatabase.password}@learn-japanese-ka1ev.mongodb.net/test?retryWrites=true&w=majority`);
+    if (process.env.NODE_ENV === 'production') {
+        mongoose.connect(`mongodb://${configDatabase.username}:${configDatabase.password}@ds157829.mlab.com:57829/back-end`, {useNewUrlParser : true});
+    } else {
+        mongoose.connect(url, { useNewUrlParser: true })
+    }
 }
 

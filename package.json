@@ -13,10 +13,13 @@
     "nodemailer": "^6.4.6",
     "socket.io": "^2.3.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "dotenv": "^8.2.0"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js"
+    "start": "node index.js",
+    "start-local": "nodemon -r dotenv/config index.js"
   },
   "author": "hainn",
   "license": "Unlicense"
