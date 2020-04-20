@@ -7,9 +7,14 @@ const gotoLearnSchema = new Schema({
     default: 'hainn'
   },
   primarySchool: [{
-    userName: String,
     email: String,
-    srcImage: String,
+    main: {
+      userName: String,
+      martialArt: Number,
+      hp: Number,
+      armor: Number,
+      srcImage: String
+    },
     percentCompleted: {
       type: Number,
       default: 3
@@ -44,9 +49,14 @@ const gotoLearnSchema = new Schema({
     }
   }],
   highSchool: [{
-    userName: String,
     email: String,
-    srcImage: String,
+    main: {
+      userName: String,
+      martialArt: Number,
+      hp: Number,
+      armor: Number,
+      srcImage: String
+    },
     percentCompleted: {
       type: Number,
       default: 3
@@ -81,9 +91,14 @@ const gotoLearnSchema = new Schema({
     }
   }],
   university: [{
-    userName: String,
     email: String,
-    srcImage: String,
+    main: {
+      userName: String,
+      martialArt: Number,
+      hp: Number,
+      armor: Number,
+      srcImage: String
+    },
     percentCompleted: {
       type: Number,
       default: 3

@@ -1,6 +1,7 @@
 const token = require('../../constants/token.js')
 const users = require('../../models/userModel.js')
 const missions = require('../../models/missionModel.js')
+const messages = require('../../models/messageModel.js')
 
 function onClientLevelUp(socket, io) {
   socket.on('clientLevelUp', (data) => {
@@ -26,6 +27,14 @@ function onClientLevelUp(socket, io) {
                 })
               } else {
                 io.to(user.email).emit('serverLevelUp', {
+                  code: 200,
+                  user: {
+                    profile: newUser.profile,
+                    main: newUser.main,
+                    pets: newUser.pets
+                  }
+                })
+                io.to(user.email).emit('serverUpdateProfile', {
                   code: 200,
                   user: {
                     profile: newUser.profile,
@@ -62,7 +71,6 @@ function onClientUpdateProfile(socket, io) {
                   code: 404
                 })
               } else {
-                console.log(newUser)
                 io.to(user.email).emit('serverUpdateProfile', {
                   code: 200,
                   user: {
@@ -89,7 +97,7 @@ function onClientBuyFigure (socket, io) {
         users.users.findOne({ email: dataToken.user.email }, (err, user) => {
           if (err) {
             console.log(err)
-          } else if (user) {
+          } else if (user && (user.profile.money >= data.condition.money) && user.profile.diamond - data.condition.diamond) {
             user.profile = {
               ...user.profile,
               diamond: user.profile.diamond - data.condition.diamond,
@@ -121,18 +129,42 @@ function onClientBuyFigure (socket, io) {
 }
 
 function onCreateMissions (socket, io) {
-  socket.on('clientCreateMissions', (data) => {
-    const mission = {
-      email: data.email 
+  socket.on('clientCreateMissions', async (data) => {
+    try {
+      const mission = {
+        email: data.email 
+      }
+      let newMission = await missions.missions.create(mission)
+      const message = {
+        email: data.email
+      }
+      let newMessage = await messages.messages.create(message)
+    } catch (error) {
+      return
     }
-    missions.missions.create(mission, (err, mission) => {
-      if (err) {
-        return
-      } else {
-        return
+  })
+}
+
+function onClientGetUserInfo (socket, io) {
+  socket.on('clientGetUserInfo', (data) => {
+    token.verify(data.token).then( async (dataToken) => {
+      if (dataToken) {
+        try {
+          let user = users.users.findOne({ email: dataToken.user.email })
+          io.to(dataToken.user.email).emit('serverSendUserInfo', {
+            user: {
+              email: user.email,
+              main: user.main,
+              pets: user.pets,
+              profile: user.profile
+            }
+          })
+        } catch (error) {
+          return
+        }
       }
     })
-  }) 
+  })
 }
 
 module.exports = function run(socket, io) {
@@ -140,4 +172,5 @@ module.exports = function run(socket, io) {
   onClientUpdateProfile(socket, io)
   onClientBuyFigure(socket, io)
   onCreateMissions(socket, io)
+  onClientGetUserInfo(socket, io)
 }

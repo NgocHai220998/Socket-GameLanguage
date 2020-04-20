@@ -65,6 +65,24 @@ const userSchema = new Schema({
         expNextLevel: {
             type: Number,
             default: 200
+        },
+        otherInformation: {
+            maxGotoLearn: {
+                type: Number,
+                default: 3
+            },
+            maxFight: {
+                type: Number,
+                default: 10
+            },
+            maxRobGotoLearn: {
+                type: Number,
+                default: 5
+            },
+            isGotoLearn: {
+                type: Boolean,
+                default: false
+            }
         }
     },
     isConfirmbyEmail: {

@@ -4,6 +4,7 @@ const user = require('./user/index')
 const rank = require('./rank/index')
 const mission = require('./mission/index')
 const gotoSchool = require('./gotoSchool/index')
+const message = require('./message/index')
 
 module.exports = {
     run: function run(socket, io) {
@@ -14,5 +15,6 @@ module.exports = {
         rank(socket, io)
         mission(socket, io)
         gotoSchool(socket, io)
+        message(socket, io)
     }
 }
