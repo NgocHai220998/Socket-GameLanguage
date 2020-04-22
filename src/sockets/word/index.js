@@ -1,5 +1,7 @@
 const token = require('../../constants/token.js')
 const users = require('../../models/userModel.js')
+const badWords = require('../../models/badWordModel.js')
+const words = require('../../models/wordModel.js')
 
 function onClientSendWord(socket, io) {
   socket.on('clientSendWord', (data) => {
@@ -37,6 +39,24 @@ function onClientSendWord(socket, io) {
   })
 }
 
+function onClientDoneWord(socket, io) {
+  socket.on('clientDoneWord', (data) => {
+    token.verify(data.token).then( async (dataToken) => {
+      if (dataToken) {
+        console.log(data)
+        let badWord = await badWords.badWords.create({
+          email: dataToken.user.email,
+          badWord: data.badWord,
+          explain: data.explain
+        })
+        let word = await words.words.deleteOne({ _id: data._id})
+        io.to(dataToken.user.email).emit('serverUpdateWord')
+        io.to(dataToken.user.email).emit('serverUpdateBadWord')
+      }
+    })
+  })
+}
 module.exports = function run(socket, io) {
   onClientSendWord(socket, io)
+  onClientDoneWord(socket, io)
 }
