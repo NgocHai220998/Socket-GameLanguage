@@ -50,3 +50,6 @@ const PORT = process.env.PORT || 4000
 http.listen(PORT, function(){
   console.log('listening on *:' + PORT)
 })
+
+const reset = require('./src/sockets/reset')
+reset() // Khởi động lại các thuộc tính như, đi học, cướp học, nhiệm vụ...
